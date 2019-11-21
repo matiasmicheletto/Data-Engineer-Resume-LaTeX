@@ -2,6 +2,10 @@
 \LoadClass{article}
 \NeedsTeXFormat{LaTeX2e}
 
+%----------------------------------------------------------------------------------------
+%	 REQUIRED PACKAGES
+%-----------------------------------------------------------------------	-----------------
+
 \RequirePackage[quiet]{fontspec}
 \RequirePackage[sfdefault]{ClearSans}
 
@@ -30,8 +34,8 @@
     pdfauthor={},
     pdfsubject={},
     pdfkeywords={},
-    colorlinks=false,           
-    allbordercolors=white       
+    colorlinks=false,           % no lik border color
+    allbordercolors=white       % white border color for all
 }
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
@@ -41,15 +45,19 @@
   \usepackage{letltxmacro}
   \setlength{\XeTeXLinkMargin}{1pt}
   \LetLtxMacro\SavedIncludeGraphics\includegraphics
-  \def\includegraphics#1#{
-    \IncludeGraphicsAux{#1}
-  }
-  \newcommand*{\IncludeGraphicsAux}[2]{
-    \XeTeXLinkBox{
-      \SavedIncludeGraphics#1{#2}
-    }
-  }
+  \def\includegraphics#1#{% #1 catches optional stuff (star/opt. arg.)
+    \IncludeGraphicsAux{#1}%
+  }%
+  \newcommand*{\IncludeGraphicsAux}[2]{%
+    \XeTeXLinkBox{%
+      \SavedIncludeGraphics#1{#2}%
+    }%
+  }%
 \fi
+
+%----------------------------------------------------------------------------------------
+%	 COLOURS
+%----------------------------------------------------------------------------------------
 
 \definecolor{white}{RGB}{255,255,255}
 \definecolor{gray}{HTML}{4D4D4D}
@@ -96,14 +104,27 @@
 \colorlet{textcolor}{gray}
 \colorlet{headercolor}{gray}
 
-\pagestyle{empty} 
+%----------------------------------------------------------------------------------------
+%	 MISC CONFIGURATIONS
+%----------------------------------------------------------------------------------------
 
-\setlength{\parindent}{0pt} 
+% \renewcommand{\bfseries}{\color{black}} % Make \textbf produce coloured text instead
 
-0\newfontfamily\headingfont[Path = fonts/]{segoeuib.ttf}
+\pagestyle{empty} % Disable headers and footers
 
-\setlength{\TPHorizModule}{1cm} 
-\setlength{\TPVertModule}{1cm} 
+\setlength{\parindent}{0pt} % Disable paragraph indentation
+
+% --------------------------------------------------------------------------------------
+% 	FONTS
+%-------------------------------------------------------------------------------------
+\newfontfamily\headingfont[Path = fonts/]{segoeuib.ttf}
+
+%----------------------------------------------------------------------------------------
+%	 SIDEBAR DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+\setlength{\TPHorizModule}{1cm} % Left margin
+\setlength{\TPVertModule}{1cm} % Top margin
 
 \newlength\imagewidth
 \newlength\imagescale
@@ -112,6 +133,7 @@
 
 \newcommand{\profilesection}[2]{\vspace{8pt}{\color{black!80} \huge #1 \rule[0.15\baselineskip]{#2}{1pt}}}
 
+% Define custom commands for CV info
 \newcommand{\cvdate}[1]{\renewcommand{\cvdate}{#1}}
 \newcommand{\cvlinkedin}[1]{\renewcommand{\cvlinkedin}{#1}}
 \newcommand{\cvgithub}[1]{\renewcommand{\cvgithub}{#1}}
@@ -227,7 +249,7 @@
               \hspace{1mm} \huge \textnormal{\textcolor{linkedin}{\faLinkedin}}
               \end{array}
             $} 
-            & \href{https://www.linkedin.com\cvlinkedin}{\cvlinkedin} \\
+            & \href{https://www.linkedin.com/\cvlinkedin}{\cvlinkedin} \\
         }
         \ifthenelse{\equal{\cvgithub}{}}{}{
             {$
@@ -251,7 +273,7 @@
     
         \vspace{3mm}  
     
-	    {\large \textbf{Programación}} 
+	    {\large \textbf{Programación y diseño}} 
 		
 		    \programming
         
@@ -333,7 +355,11 @@
 }
 
 
-% Colores de las tres primeras letras en los titulos
+%----------------------------------------------------------------------------------------
+%	 COLOURED SECTION TITLE BOX
+%----------------------------------------------------------------------------------------
+
+% Command to create the rounded boxes around the first three letters of section titles
 \newcommand*\round[2]{%
 	\tikz[baseline=(char.base)]\node[anchor=north west, draw,rectangle, rounded corners, inner sep=1.6pt, minimum size=5.5mm, text height=3.6mm, fill=#2,#2,text=white](char){#1};%
 }
@@ -343,6 +369,7 @@
 		\color{pblue} #1#2#3%
 	}%
 }
+
 
 \renewcommand{\section}[1]{
   \par\vspace{\parskip}
@@ -362,14 +389,28 @@
 
 \pagestyle{empty}
 
+%----------------------------------------------------------------------------------------
+%	 LONG LIST ENVIRONMENT
+%----------------------------------------------------------------------------------------
 
 \setlength{\tabcolsep}{0pt}
 
+% New environment for the long list
 \newenvironment{twenty}{%
 	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ll}
 }{%
 	\end{tabular*}
 }
+
+% \newcommand{\twentyitem}[5]{%
+% 	#1&\parbox[t]{0.83\textwidth}{%
+% 		\textbf{#2}% 
+% 		\hfill%
+% 		{\footnotesize#3}\\%
+%         \ifblank{#4}{}{#4 \\}
+% 		#5\vspace{\parsep}%
+% 	}\\
+% }
 
 \newcommand{\twentyitem}[6]{%
 	#1&\parbox[t]{0.83\textwidth}{%
@@ -383,8 +424,13 @@
 	}\\
 }
 
+%----------------------------------------------------------------------------------------
+%	 SMALL LIST ENVIRONMENT
+%----------------------------------------------------------------------------------------
+
 \setlength{\tabcolsep}{0pt}
 
+% New environment for the small list
 \newenvironment{twentyshort}{%
 	\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ll}
 }{%
@@ -397,19 +443,32 @@
 	}\\
 }
 
+%----------------------------------------------------------------------------------------
+%	 MARGINS AND LINKS
+%----------------------------------------------------------------------------------------
+
 \RequirePackage[left=7.6cm,top=0.1cm,right=1cm,bottom=0.1cm,nohead,nofoot]{geometry}
+
 
 \usepackage{smartdiagram}
 \smartdiagramset{
     bubble center node font = \footnotesize,
     bubble node font = \footnotesize,
+    % specifies the minimum size of the bubble center node
     bubble center node size = 0.5cm,
+    %  specifies the minimum size of the bubbles
     bubble node size = 0.5cm,
+    % specifies which is the distance among the bubble center node and the other bubbles
     distance center/other bubbles = 0.3cm,
+    % sets the distance from the text to the border of the bubble center node
     distance text center bubble = 0.5cm,
+    % set center bubble color
     bubble center node color = pblue,
+    % define the list of colors usable in the diagram
     set color list = {lightgray, materialcyan, orange, green, materialorange, materialteal, materialamber, materialindigo, materialgreen, materiallime},
+    % sets the opacity at which the bubbles are shown
     bubble fill opacity = 0.6,
+    % sets the opacity at which the bubble text is shown
     bubble text opacity = 1,
 }
 
